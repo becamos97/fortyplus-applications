@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+  <h2>Hello, {{ user.first_name }} {{ user.last_name }}!</h2>
+
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+    <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+    <li class="list-group-item"><strong>First Name:</strong> {{ user.first_name }}</li>
+    <li class="list-group-item"><strong>Last Name:</strong> {{ user.last_name }}</li>
+  </ul>
+
+  <hr>
+  <h3>Feedback</h3>
+
+  {% if session['username'] == user.username %}
+    <a href="/users/{{ user.username }}/feedback/add" class="btn btn-success mb-3">
+      + Add Feedback
+    </a>
+  {% endif %}
+
+  {% if user.feedback %}
+    <ul class="list-group">
+      {% for fb in user.feedback %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ fb.title }}</strong> — {{ fb.content }}
+          </div>
+          {% if session['username'] == user.username %}
+            <div>
+              <a href="/feedback/{{ fb.id }}/update" class="btn btn-sm btn-outline-info">Edit</a>
+              <form action="/feedback/{{ fb.id }}/delete" method="POST" style="display:inline;">
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No feedback yet.</p>
+  {% endif %}
+
+{% endblock %}

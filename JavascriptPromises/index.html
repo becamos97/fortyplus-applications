@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Promises Practice: Numbers & Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Axios (Promise based HTTP) -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    body { margin: 24px; background: #0f172a; color: #e2e8f0; }
+    h1,h2 { margin: 0 0 12px; }
+    .card { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 16px; margin-bottom: 18px; }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+    .col { flex: 1 1 320px; }
+    input, button { padding: 10px 12px; border-radius: 10px; border: 1px solid #334155; background:#0b1220; color:#e2e8f0; }
+    button { cursor: pointer; }
+    button:hover { filter: brightness(1.15); }
+    ul { margin: 10px 0 0 18px; }
+    img.card-img { width: 160px; height: auto; border-radius: 10px; border: 1px solid #1f2937; }
+    .stack { display:flex; flex-direction:column; gap:10px; }
+    .muted { color:#94a3b8; font-size: 0.9rem; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:12px; }
+    .hr { height:1px; background:#1f2937; margin:12px 0; }
+    .error { color: #fecaca; }
+    .success { color: #bbf7d0; }
+  </style>
+</head>
+<body>
+
+  <h1>JavaScript Promises — Practice</h1>
+
+  <!-- PART 1: NUMBER FACTS -->
+  <section class="card">
+    <h2>Part 1: Number Facts</h2>
+    <div class="row">
+      <div class="col">
+        <div class="stack">
+          <label>
+            Favorite number:
+            <input id="fav-number" type="number" value="7" />
+          </label>
+          <div class="row">
+            <button id="btn-one-fact">Get One Fact</button>
+            <button id="btn-multi-facts">Get Facts for Multiple Numbers (in one request)</button>
+            <button id="btn-four-facts">Get Four Facts (parallel)</button>
+          </div>
+          <div class="muted">Tip: edit the multiple numbers below (comma-separated)</div>
+          <input id="multi-nums" type="text" value="3,7,42,99" />
+        </div>
+      </div>
+      <div class="col">
+        <strong>Facts Output</strong>
+        <div class="hr"></div>
+        <ul id="facts-list"></ul>
+        <div id="facts-msg" class="muted"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 2: DECK OF CARDS -->
+  <section class="card">
+    <h2>Part 2: Deck of Cards</h2>
+    <div class="row">
+      <div class="col stack">
+        <div class="stack">
+          <button id="btn-one-card">Draw 1 card from a NEW shuffled deck (log)</button>
+          <button id="btn-two-cards">Draw 2 cards from the SAME new deck (log both)</button>
+        </div>
+        <div class="hr"></div>
+        <div class="stack">
+          <button id="btn-new-deck">Create New Deck (for UI)</button>
+          <button id="btn-reshuffle" disabled>Reshuffle Current Deck</button>
+          <button id="btn-draw-card" disabled>Draw Card (UI)</button>
+          <div id="deck-msg" class="muted"></div>
+        </div>
+      </div>
+      <div class="col">
+        <strong>Drawn Cards (UI)</strong>
+        <div class="hr"></div>
+        <div id="cards-grid" class="grid"></div>
+      </div>
+    </div>
+  </section>
+
+    <!-- PART 3: POKEMON -->
+  <section class="card">
+    <h2>Part 3: Pokémon</h2>
+    <div class="row">
+      <div class="col stack">
+        <button id="btn-random-pokemon">Get 3 Random Pokémon</button>
+        <div id="poke-msg" class="muted"></div>
+      </div>
+      <div class="col">
+        <strong>Pokémon Output</strong>
+        <div class="hr"></div>
+        <div id="poke-grid" class="grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+

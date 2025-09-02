@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Async & Await – Numbers + Deck of Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://deckofcardsapi.com" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 2rem; }
+    h1,h2 { margin: 0.2rem 0 0.8rem; }
+    section { border: 1px solid #ddd; border-radius: 12px; padding: 1rem; margin-bottom: 1.2rem; }
+    .row { display: flex; gap: 0.5rem; align-items: flex-end; flex-wrap: wrap; }
+    label { display: block; font-size: 0.9rem; color: #555; margin-bottom: 0.25rem; }
+    input, button { padding: 0.6rem 0.8rem; font-size: 1rem; }
+    button { cursor: pointer; }
+    ul { padding-left: 1.25rem; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+    .card { border: 1px solid #eee; border-radius: 10px; padding: 0.5rem; text-align: center; }
+    .muted { color: #666; font-size: 0.95rem; }
+    .ok { color: #0a7f35; } .error { color: #b00020; }
+    .pill { display:inline-block; padding: 0.25rem 0.5rem; border-radius: 999px; background:#f5f5f5; margin-right:0.5rem; font-size:0.9rem; }
+    .grid { display:grid; grid-template-columns: 1fr; gap: 0.5rem; }
+    .actions { display:flex; gap:0.5rem; flex-wrap:wrap; }
+    .loading::after { content:"  •••"; animation: dots 1s steps(3, end) infinite; }
+    @keyframes dots { 0%,20%{color:transparent} 40%,60%{color:currentColor} 80%,100%{color:transparent} }
+  </style>
+</head>
+<body>
+  <h1>Async/Await Practice – Numbers API + Deck of Cards</h1>
+  <p class="muted">All requests use <strong>async/await</strong> with <code>fetch</code> and basic error handling.</p>
+
+  <!-- Part 1 -->
+  <section>
+    <h2>Part 1 — Number Facts</h2>
+
+    <div class="grid">
+      <div class="row">
+        <div>
+          <label for="favNum">Favorite number</label>
+          <input id="favNum" type="number" value="7" />
+        </div>
+        <div class="actions">
+          <button id="btnSingle">Get 1 fact (JSON)</button>
+          <button id="btnFour">Get 4 facts about favorite</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="multiNums">Multiple numbers (comma-separated)</label>
+          <input id="multiNums" type="text" value="3,9,27,42" />
+        </div>
+        <div class="actions">
+          <button id="btnMulti">Get facts for multiple</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="factsOutput" class="grid" style="margin-top:0.75rem;"></div>
+  </section>
+
+  <!-- Part 2 -->
+  <section>
+    <h2>Part 2 — Deck of Cards</h2>
+
+    <div class="actions" style="margin-bottom:0.5rem;">
+      <button id="btnOne">Draw 1 card (new deck) → console</button>
+      <button id="btnTwo">Draw 2 cards (same new deck) → console</button>
+      <button id="btnInitDeck">Create Deck for UI</button>
+      <button id="btnDraw" disabled>Draw Card (UI)</button>
+    </div>
+
+    <div id="deckStatus" class="muted">No deck yet.</div>
+    <div id="cardsUI" class="cards"></div>
+  </section>
+
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

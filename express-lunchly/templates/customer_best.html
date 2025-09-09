@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Best Customers</h2>
+<table class="table">
+  <thead><tr><th>Name</th><th>Reservations</th></tr></thead>
+  <tbody>
+    {% for c in customers %}
+      <tr>
+        <td><a href="/{{ c.id }}">{{ c.fullName }}</a></td>
+        <td>{{ c.reservationCount }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

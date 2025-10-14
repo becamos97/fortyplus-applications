@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<DocumentFragment>
+  <li>
+    <span>
+      Test
+    </span>
+     
+    <button
+      aria-label="remove-todo"
+    >
+      X
+    </button>
+  </li>
+</DocumentFragment>
+`;

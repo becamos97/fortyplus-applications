@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    style="display: inline-flex; align-items: center;"
+  >
+    <div
+      data-testid="box"
+      style="width: 50px; height: 60px; background-color: red; display: inline-block; margin: 8px; border-radius: 6px;"
+    />
+    <button
+      aria-label="remove-box"
+    >
+      X
+    </button>
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>React Props – Part 3 (Person)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 10px 0;
+      max-width: 520px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    .card h3 { margin: 6px 0 10px; }
+    .muted { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React 18 + Babel (CDN) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const Person = ({ name, age, hobbies = [] }) => {
+      const displayName = name.length > 8 ? name.slice(0, 6) : name;
+      const canVote = age >= 18;
+
+      return (
+        <div className="card">
+          <p>Learn some information about this person</p>
+          <p><strong>Name:</strong> {displayName}</p>
+          <p><strong>Age:</strong> {age}</p>
+
+          <h3 className={canVote ? "" : "muted"}>
+            {canVote ? "please go vote!" : "you must be 18"}
+          </h3>
+
+          {hobbies.length > 0 && (
+            <>
+              <p><strong>Hobbies:</strong></p>
+              <ul>
+                {hobbies.map(h => <li key={h}>{h}</li>)}
+              </ul>
+            </>
+          )}
+        </div>
+      );
+    };
+
+    const App = () => (
+      <div>
+        <Person
+          name="Alexander"
+          age={22}
+          hobbies={["coding", "lifting", "road trips"]}
+        />
+        <Person
+          name="Maya"
+          age={16}
+          hobbies={["photography", "piano"]}
+        />
+        <Person
+          name="Sam"
+          age={30}
+          hobbies={["chess", "cooking", "hiking", "reading"]}
+        />
+      </div>
+    );
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

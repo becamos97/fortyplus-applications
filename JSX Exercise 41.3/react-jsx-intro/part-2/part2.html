@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>React Props – Part 2 (Tweets)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Simple tweet styling via a CSS class */
+    .tweet {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 10px 0;
+      max-width: 520px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .tweet__header {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .tweet__name {
+      font-weight: 700;
+    }
+    .tweet__handle {
+      color: #6b7280;
+    }
+    .tweet__date {
+      margin-left: auto;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    .tweet__msg {
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React 18 + Babel (CDN) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const Tweet = ({ username, name, date, message }) => (
+      <article className="tweet">
+        <header className="tweet__header">
+          <span className="tweet__name">{name}</span>
+          <span className="tweet__handle">@{username}</span>
+          <time className="tweet__date">{date}</time>
+        </header>
+        <p className="tweet__msg">{message}</p>
+      </article>
+    );
+
+    const App = () => (
+      <div>
+        <Tweet
+          username="becamos97"
+          name="Brandon Camos"
+          date="Oct 13"
+          message="First React props assignment done. On to the next! 🔥"
+        />
+        <Tweet
+          username="marissa"
+          name="Marissa"
+          date="Oct 13"
+          message="Default props & children are super handy once you get the hang of them."
+        />
+        <Tweet
+          username="joel"
+          name="Joel"
+          date="Oct 12"
+          message={`Map over arrays. Give stable keys. Profit.\nP.S. Lint your JSX 😉`}
+        />
+      </div>
+    );
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

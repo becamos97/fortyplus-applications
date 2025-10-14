@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Color Boxes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(8, 48px);
+      gap: 10px; margin-bottom: 16px;
+    }
+    .box {
+      width: 48px; height: 48px; border-radius: 8px; display: grid; place-items: center;
+      color: #111827; font-size: 10px; font-weight: 700; text-transform: uppercase;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    button { padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; cursor: pointer; }
+    button:hover { background: #f9fafb; }
+    .hint { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React 18 + Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const rand = (max) => Math.floor(Math.random() * max);
+
+    function Box({ color, changed }) {
+      return (
+        <div className="box" style={{ background: color }}>
+          {changed ? "changed!" : null}
+        </div>
+      );
+    }
+
+    function ColorBoxes({
+      colors = ["#f87171","#fb923c","#fbbf24","#a3e635","#34d399","#22d3ee","#60a5fa","#a78bfa","#f472b6","#fca5a5","#fde047","#86efac","#67e8f9","#93c5fd","#c4b5fd","#fbcfe8"],
+      numBoxes = 16
+    }) {
+      const makeStart = () => Array.from({ length: numBoxes }, () => colors[rand(colors.length)]);
+      const [boxes, setBoxes] = useState(makeStart);
+      const [lastIdx, setLastIdx] = useState(null);
+
+      const changeRandom = () => {
+        const i = rand(numBoxes);
+        // ensure a new color (attempt a few times)
+        let nextColor = colors[rand(colors.length)];
+        let tries = 0;
+        while (nextColor === boxes[i] && tries < 8) {
+          nextColor = colors[rand(colors.length)]; tries++;
+        }
+        const copy = boxes.slice();
+        copy[i] = nextColor;
+        setBoxes(copy);
+        setLastIdx(i);
+      };
+
+      const reset = () => { setBoxes(makeStart()); setLastIdx(null); };
+
+      return (
+        <div>
+          <div className="grid" style={{ gridTemplateColumns: `repeat(${Math.min(8, numBoxes)}, 48px)` }}>
+            {boxes.map((c, i) => (
+              <Box key={i} color={c} changed={i === lastIdx} />
+            ))}
+          </div>
+          <div className="row">
+            <button onClick={changeRandom}>Change</button>
+            <button onClick={reset}>Reset</button>
+            <span className="hint">Click “Change” to recolor a random box; the one just changed shows “changed!”.</span>
+          </div>
+        </div>
+      );
+    }
+
+    const App = () => <ColorBoxes numBoxes={16} />;
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

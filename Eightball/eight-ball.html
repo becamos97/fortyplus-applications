@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Magic Eight Ball</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px; }
+    .wrap { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+    .ball {
+      width: 260px; height: 260px; border-radius: 50%;
+      display: grid; place-items: center; color: white; text-align: center;
+      padding: 18px; cursor: pointer; user-select: none; box-shadow: 0 6px 16px rgba(0,0,0,.2);
+      transition: background-color .15s ease-in-out, transform .06s ease-in-out;
+    }
+    .ball:active { transform: scale(.99); }
+    .msg { font-weight: 700; line-height: 1.25; }
+    .panel { min-width: 220px; }
+    .counts { display: grid; gap: 6px; margin-top: 10px; }
+    .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: -2px; }
+    button { padding: 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; cursor: pointer; }
+    button:hover { background: #f9fafb; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React 18 + Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    const DEFAULT_ANSWERS = [
+      { msg: "It is certain.", color: "green" },
+      { msg: "It is decidedly so.", color: "green" },
+      { msg: "Without a doubt.", color: "green" },
+      { msg: "Yes - definitely.", color: "green" },
+      { msg: "You may rely on it.", color: "green" },
+      { msg: "As I see it, yes.", color: "green" },
+      { msg: "Most likely.", color: "green" },
+      { msg: "Outlook good.", color: "green" },
+      { msg: "Yes.", color: "green" },
+      { msg: "Signs point to yes.", color: "goldenrod" },
+      { msg: "Reply hazy, try again.", color: "goldenrod" },
+      { msg: "Ask again later.", color: "goldenrod" },
+      { msg: "Better not tell you now.", color: "goldenrod" },
+      { msg: "Cannot predict now.", color: "goldenrod" },
+      { msg: "Concentrate and ask again.", color: "goldenrod" },
+      { msg: "Don't count on it.", color: "red" },
+      { msg: "My reply is no.", color: "red" },
+      { msg: "My sources say no.", color: "red" },
+      { msg: "Outlook not so good.", color: "red" },
+      { msg: "Very doubtful.", color: "red" },
+    ];
+
+    const rand = (max) => Math.floor(Math.random() * max);
+
+    function EightBall({ answers = DEFAULT_ANSWERS }) {
+      const INITIAL = { msg: "Think of a Question", color: "black" };
+
+      // unique color set derived from answers (for dynamic counters/UI)
+      const colorSet = useMemo(() => Array.from(new Set(answers.map(a => a.color))), [answers]);
+
+      // state for current face + counts by color
+      const [face, setFace] = useState(INITIAL);
+      const [counts, setCounts] = useState(() =>
+        colorSet.reduce((acc, c) => (acc[c] = 0, acc), {})
+      );
+
+      const handleClick = () => {
+        const pick = answers[rand(answers.length)];
+        setFace(pick);
+        setCounts(c => ({ ...c, [pick.color]: (c[pick.color] || 0) + 1 }));
+      };
+
+      const reset = () => {
+        setFace(INITIAL);
+        setCounts(colorSet.reduce((acc, c) => (acc[c] = 0, acc), {}));
+      };
+
+      return (
+        <div className="wrap">
+          <div
+            className="ball"
+            style={{ backgroundColor: face.color }}
+            onClick={handleClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleClick()}
+            aria-label="Magic Eight Ball; press Enter/Space or click to reveal an answer"
+          >
+            <div className="msg">{face.msg}</div>
+          </div>
+
+          <div className="panel">
+            <button onClick={reset}>Reset</button>
+            <div className="counts">
+              <div><span className="swatch" style={{background:'black'}}></span>Initial: <b>“Think of a Question”</b></div>
+              {colorSet.map(c =>
+                <div key={c}>
+                  <span className="swatch" style={{ background: c }}></span>
+                  {c}: <b>{counts[c] ?? 0}</b>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const App = () => <EightBall answers={DEFAULT_ANSWERS} />;
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
